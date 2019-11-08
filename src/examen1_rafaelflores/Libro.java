@@ -94,6 +94,11 @@ public class Libro {
     public double getPrecio() {
         return precio;
     }
+
+    @Override
+    public String toString() {
+        return titulo;
+    }
     
     
 }

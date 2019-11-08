@@ -21,23 +21,6 @@ public class BibliotecaUser extends javax.swing.JFrame {
      */
     public BibliotecaUser() {
         initComponents();
-        for (int i = 0; i < libros.size(); i++) {
-            Libro lib = libros.get(i);
-            Object row[] ={
-                lib.getTitulo(),
-                    lib.getAutor(),
-                    lib.getDescrip(),
-                    lib.getFechaLanzamiento(),
-                    lib.getPuntos(),
-                    lib.getEdicion(),
-                    lib.getCopias(),
-                    lib.getGenero(),
-                    lib.getPrecio()
-            };
-            modelo.addRow(row);
-            this.JtLibrosUser.setModel(modelo);
-        }
-        System.out.println(this.actuaUser);
     }
 
     /**

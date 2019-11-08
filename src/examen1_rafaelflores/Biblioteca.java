@@ -51,7 +51,7 @@ public class Biblioteca extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         txtPrecio = new javax.swing.JTextField();
         txtTitulo = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
         txtAutor = new javax.swing.JTextField();
         txtDescripcion = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -87,10 +87,10 @@ public class Biblioteca extends javax.swing.JFrame {
 
         jLabel8.setText("Precio");
 
-        jButton1.setText("Crear Libro");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnGuardar.setText("Crear Libro");
+        btnGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                btnGuardarMouseClicked(evt);
             }
         });
 
@@ -134,7 +134,7 @@ public class Biblioteca extends javax.swing.JFrame {
                                 .addComponent(spnCopias, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(spnEdicion, javax.swing.GroupLayout.Alignment.LEADING)))
                         .addGap(116, 116, 116)
-                        .addComponent(jButton1))
+                        .addComponent(btnGuardar))
                     .addComponent(cmbGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(243, Short.MAX_VALUE))
         );
@@ -145,7 +145,7 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnGuardar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -331,18 +331,19 @@ public class Biblioteca extends javax.swing.JFrame {
 
     private void btnSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalirMouseClicked
         Loggin log = new Loggin();
-        log.modelo = modelo;
+        log.libro = libros;
+        log.setCargar();
         log.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnSalirMouseClicked
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+    private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
         modelo = (DefaultTableModel) this.jtLibro.getModel();
         if (this.txtTitulo.getText().equals("") || this.txtDescripcion.getText().equals("") || this.txtAutor.getText().equals("") || this.txtPrecio.getText().equals("")) {
            JOptionPane.showMessageDialog(this, "Debe llenar todos los campos!!!!!!"); 
         }else{
             double precio;
-            String fecha = form.format(this.dcFecha);
+            String fecha = form.format(this.dcFecha.getDate());
             try {
                 precio = Double.parseDouble(this.txtPrecio.getText());
                 Libro lib = new Libro(this.txtTitulo.getText(), this.txtDescripcion.getText(), this.cmbGenero.getSelectedItem().toString(), 
@@ -366,7 +367,8 @@ public class Biblioteca extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "En la seccion de Precio solo puede ingresar datos numericos!!!!"); 
             }
         }
-    }//GEN-LAST:event_jButton1MouseClicked
+        JOptionPane.showMessageDialog(this, "Su Libro fue Insertado con exito");
+    }//GEN-LAST:event_btnGuardarMouseClicked
 
     private void btnModMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnModMouseClicked
         modelo = (DefaultTableModel) this.jtLibro.getModel();
@@ -375,24 +377,49 @@ public class Biblioteca extends javax.swing.JFrame {
             switch (col) {
                 case 0:
                     String titulo = JOptionPane.showInputDialog("Ingrese el nuevo titulo");
+                    for (int i = 0; i < libros.size(); i++) {
+                        if (modelo.getValueAt(this.jtLibro.getSelectedRow(), 0).equals(libros.get(i).getTitulo())) {
+                            libros.get(i).setTitulo(titulo);
+                        }
+                    }
                     modelo.setValueAt(titulo, this.jtLibro.getSelectedRow(), col);
                     break;
                 case 1:
                     String autor = JOptionPane.showInputDialog("Ingrese el nuevo Autor");
+                    for (int i = 0; i < libros.size(); i++) {
+                        if (modelo.getValueAt(this.jtLibro.getSelectedRow(), 0).equals(libros.get(i).getAutor())) {
+                            libros.get(i).setAutor(autor);
+                        }
+                    }
                     modelo.setValueAt(autor, this.jtLibro.getSelectedRow(), col);
                     break;
                 case 2:
                     String descrip = JOptionPane.showInputDialog("Ingrese la nueva Descripcion");
+                    for (int i = 0; i < libros.size(); i++) {
+                        if (modelo.getValueAt(this.jtLibro.getSelectedRow(), 0).equals(libros.get(i).getDescrip())) {
+                            libros.get(i).setDescrip(descrip);
+                        }
+                    }
                     modelo.setValueAt(descrip, this.jtLibro.getSelectedRow(), col);
                     break;
                 case 3:
                     String fecha = JOptionPane.showInputDialog("Ingrese la nueva fecha (dd-MM-yyyy)");
+                    for (int i = 0; i < libros.size(); i++) {
+                        if (modelo.getValueAt(this.jtLibro.getSelectedRow(), 0).equals(libros.get(i).getFechaLanzamiento())) {
+                            libros.get(i).setFechaLanzamiento(fecha);
+                        }
+                    }
                     modelo.setValueAt(fecha, this.jtLibro.getSelectedRow(), col);
                     break;
                 case 4:
                     try {
                         int puntos = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la nueva puntuacion"));
                         if (puntos > 0 && puntos < 6) {
+                            for (int i = 0; i < libros.size(); i++) {
+                                if (modelo.getValueAt(this.jtLibro.getSelectedRow(), 0).equals(libros.get(i).getPuntos())) {
+                                    libros.get(i).setPuntos(puntos);
+                                }
+                            }
                             modelo.setValueAt(puntos, this.jtLibro.getSelectedRow(), col);
                         }else{
                             JOptionPane.showMessageDialog(this, "No puede ingresar una puntuacion menor a 1 o mayor a 5");
@@ -405,6 +432,11 @@ public class Biblioteca extends javax.swing.JFrame {
                     try {
                         int edicion = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la nueva Edicion"));
                         if (edicion > 0) {
+                            for (int i = 0; i < libros.size(); i++) {
+                                if (modelo.getValueAt(this.jtLibro.getSelectedRow(), 0).equals(libros.get(i).getEdicion())) {
+                                    libros.get(i).setEdicion(edicion);
+                                }
+                            }
                             modelo.setValueAt(edicion, this.jtLibro.getSelectedRow(), col);
                         }else{
                             JOptionPane.showMessageDialog(this, "No puede ingresar una Edicion menor a 1 ");
@@ -417,6 +449,11 @@ public class Biblioteca extends javax.swing.JFrame {
                     try {
                         int copias = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la nueva Edicion"));
                         if (copias > 0) {
+                            for (int i = 0; i < libros.size(); i++) {
+                                if (modelo.getValueAt(this.jtLibro.getSelectedRow(), 0).equals(libros.get(i).getCopias())) {
+                                    libros.get(i).setCopias(copias);
+                                }
+                            }
                             modelo.setValueAt(copias, this.jtLibro.getSelectedRow(), col);
                         }else{
                             JOptionPane.showMessageDialog(this, "No puede ingresar una puntuacion menor a 1 ");
@@ -429,6 +466,11 @@ public class Biblioteca extends javax.swing.JFrame {
                     String genero = JOptionPane.showInputDialog("Ingrese el nuevo genero");
                     for (int i = 0; i < genre.length; i++) {
                         if (genero.equals(genre[i])) {
+                            for (int j = 0; j < libros.size(); j++) {
+                                if (modelo.getValueAt(this.jtLibro.getSelectedRow(), 0).equals(libros.get(j).getGenero())) {
+                                    libros.get(j).setGenero(genero);
+                                }
+                            }
                             modelo.setValueAt(genero, this.jtLibro.getSelectedRow(), col);
                             break;
                         }
@@ -441,6 +483,11 @@ public class Biblioteca extends javax.swing.JFrame {
                     try {
                         double precio = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el nuevo Precio"));
                         if (precio > 0) {
+                            for (int i = 0; i < libros.size(); i++) {
+                                if (modelo.getValueAt(this.jtLibro.getSelectedRow(), 0).equals(libros.get(i).getPrecio())) {
+                                    libros.get(i).setPrecio(precio);
+                                }
+                            }
                             modelo.setValueAt(precio, this.jtLibro.getSelectedRow(), col);
                         }else{
                             JOptionPane.showMessageDialog(this, "No puede ingresar un precio menor a 1 ");
@@ -455,7 +502,16 @@ public class Biblioteca extends javax.swing.JFrame {
     }//GEN-LAST:event_btnModMouseClicked
 
     private void btnDelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDelMouseClicked
-        // TODO add your handling code here:
+        if (this.jtLibro.getSelectedRow() >= 0) {
+            modelo = (DefaultTableModel) this.jtLibro.getModel(); 
+            modelo.removeRow(this.jtLibro.getSelectedRow());
+            for (int i = 0; i < libros.size(); i++) {
+                if (modelo.getValueAt(this.jtLibro.getSelectedRow(), 0).equals(libros.get(i).getTitulo())) {
+                    libros.remove(libros.get(i));
+                }
+            }
+            this.jtLibro.setModel(modelo);
+        }
     }//GEN-LAST:event_btnDelMouseClicked
 
     /**
@@ -495,12 +551,12 @@ public class Biblioteca extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDel;
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnMod;
     private javax.swing.JButton btnSalir;
     private javax.swing.JComboBox<String> cmbGenero;
     private javax.swing.JComboBox<String> cmbPuntaje;
     private com.toedter.calendar.JDateChooser dcFecha;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
