@@ -5,17 +5,39 @@
  */
 package examen1_rafaelflores;
 
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Faith
  */
 public class BibliotecaUser extends javax.swing.JFrame {
-
+    public String actuaUser;
+    public ArrayList<Libro> libros = new ArrayList();
+    public DefaultTableModel modelo;
     /**
      * Creates new form BibliotecaUser
      */
     public BibliotecaUser() {
         initComponents();
+        for (int i = 0; i < libros.size(); i++) {
+            Libro lib = libros.get(i);
+            Object row[] ={
+                lib.getTitulo(),
+                    lib.getAutor(),
+                    lib.getDescrip(),
+                    lib.getFechaLanzamiento(),
+                    lib.getPuntos(),
+                    lib.getEdicion(),
+                    lib.getCopias(),
+                    lib.getGenero(),
+                    lib.getPrecio()
+            };
+            modelo.addRow(row);
+            this.JtLibrosUser.setModel(modelo);
+        }
+        System.out.println(this.actuaUser);
     }
 
     /**
@@ -39,6 +61,7 @@ public class BibliotecaUser extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jtLibroFav = new javax.swing.JTable();
         cmbLibroFav = new javax.swing.JComboBox<>();
+        btnSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,7 +91,7 @@ public class BibliotecaUser extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(JtLibrosUser);
 
-        btnAgregar.setText("jButton1");
+        btnAgregar.setText("Agregar");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -91,7 +114,7 @@ public class BibliotecaUser extends javax.swing.JFrame {
                 .addComponent(btnAgregar)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(83, Short.MAX_VALUE))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Agregar a la Lista", jPanel1);
@@ -104,7 +127,7 @@ public class BibliotecaUser extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 399, Short.MAX_VALUE)
+            .addGap(0, 379, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("ver Informacion", jPanel2);
@@ -140,34 +163,55 @@ public class BibliotecaUser extends javax.swing.JFrame {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(33, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(cmbLibroFav, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(99, 99, 99))
         );
 
         jTabbedPane1.addTab("Ver Libros por Genero fav.", jPanel3);
+
+        btnSalir.setText("Salir");
+        btnSalir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSalirMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(jTabbedPane1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jTabbedPane1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSalir)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(btnSalir)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalirMouseClicked
+        Loggin log = new Loggin();
+        log.modelo = modelo;
+        log.setVisible(true);
+        this.setVisible(false);    
+    }//GEN-LAST:event_btnSalirMouseClicked
 
     /**
      * @param args the command line arguments
@@ -207,6 +251,7 @@ public class BibliotecaUser extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable JtLibrosUser;
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JComboBox<String> cmbLibroFav;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -218,4 +263,22 @@ public class BibliotecaUser extends javax.swing.JFrame {
     private javax.swing.JTable jtLibroFav;
     private javax.swing.JTable jtListaLibros;
     // End of variables declaration//GEN-END:variables
+    public void setCargar(){
+        for (int i = 0; i < libros.size(); i++) {
+            Libro lib = libros.get(i);
+            Object row[] ={
+                lib.getTitulo(),
+                    lib.getAutor(),
+                    lib.getDescrip(),
+                    lib.getFechaLanzamiento(),
+                    lib.getPuntos(),
+                    lib.getEdicion(),
+                    lib.getCopias(),
+                    lib.getGenero(),
+                    lib.getPrecio()
+            };
+            modelo.addRow(row);
+            this.JtLibrosUser.setModel(modelo);
+        }
+    }
 }

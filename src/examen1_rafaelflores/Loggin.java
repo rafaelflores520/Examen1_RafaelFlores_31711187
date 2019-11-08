@@ -5,17 +5,58 @@
  */
 package examen1_rafaelflores;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Faith
  */
 public class Loggin extends javax.swing.JFrame {
+    public static ArrayList<Usuario> usuario = new ArrayList();
+    public static SimpleDateFormat form = new SimpleDateFormat("dd-MM-yyyy");
+    public static ArrayList<Libro> libro = new ArrayList();
+    public static DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
+            },
+            new String [] {
+                "Titulo", "Autor", "Descripcion", "Fecha", "Puntaje", "Edicion", "Copias", "Genero", "Precio"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
     /**
      * Creates new form Loggin
      */
     public Loggin() {
         initComponents();
+        usuario.add(new Usuario("admin", "root", "22-08-98", "8888-8888", "admin@correo", "Accion"));
+        usuario.add(new Usuario("usr1", "p1", "22-08-98", "8888-8888", "usr1@correo", "Fantasia"));
+        usuario.add(new Usuario("usr2", "p2", "23-07-99", "8888-8888", "usr2@correo", "Historia"));
+        usuario.add(new Usuario("usr3", "p3", "24-09-97", "8888-8888", "usr3@correo", "Romance"));
+        usuario.add(new Usuario("usr4", "p4", "25-11-96", "8888-8888", "usr4@correo", "Accion"));
+        
+        libro.add(new Libro("Titulo 1", "Descrip 1", "Fantasia", "Autor 1", "01-01-2000", 1, 100, 1,  100));
+        libro.add(new Libro("Titulo 2" , "Descrip 2", "Accion", "Autor 2", "10-02-2001", 1, 100, 1,  100));
+        libro.add(new Libro("Titulo 3", "Descrip 3", "Historia", "Autor 3", "11-03-2002", 1, 100, 1,  100));
+        libro.add(new Libro("Titulo 4", "Descrip 4", "Roamnce", "Autor 4", "14-04-2003", 1, 100, 1,  100));
+        libro.add(new Libro("Titulo 5", "Descrip 5", "Accion", "Autor 5", "15-05-2004", 1, 100, 1,  100));
     }
 
     /**
@@ -46,10 +87,10 @@ public class Loggin extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         txtUserR = new javax.swing.JTextField();
         txtPassR = new javax.swing.JTextField();
-        txtFecha = new javax.swing.JTextField();
         txtTelefono = new javax.swing.JTextField();
         txtCorreo = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jdUserNacimiento = new com.toedter.calendar.JDateChooser();
 
         jLabel2.setText("jLabel2");
 
@@ -61,7 +102,7 @@ public class Loggin extends javax.swing.JFrame {
 
         jLabel3.setText("Contraseña");
 
-        btnIngresar.setText("jButton1");
+        btnIngresar.setText("Ingresar");
         btnIngresar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnIngresarMouseClicked(evt);
@@ -73,9 +114,9 @@ public class Loggin extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(116, 116, 116)
+                .addGap(164, 164, 164)
                 .addComponent(btnIngresar)
-                .addContainerGap(238, Short.MAX_VALUE))
+                .addContainerGap(188, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(57, 57, 57)
@@ -96,9 +137,9 @@ public class Loggin extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(251, Short.MAX_VALUE)
+                .addContainerGap(170, Short.MAX_VALUE)
                 .addComponent(btnIngresar)
-                .addContainerGap())
+                .addGap(94, 94, 94))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addContainerGap()
@@ -131,6 +172,11 @@ public class Loggin extends javax.swing.JFrame {
         jLabel9.setText("Genero");
 
         jButton1.setText("Registrarse");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -156,10 +202,10 @@ public class Loggin extends javax.swing.JFrame {
                             .addComponent(jLabel7)
                             .addComponent(jLabel8))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+                            .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+                            .addComponent(jdUserNacimiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(115, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -174,10 +220,10 @@ public class Loggin extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(txtPassR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
-                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jdUserNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -191,7 +237,7 @@ public class Loggin extends javax.swing.JFrame {
                     .addComponent(jLabel9))
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Registro", jPanel2);
@@ -217,37 +263,59 @@ public class Loggin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngresarMouseClicked
-        // TODO add your handling code here:
+        System.out.println(libro.size());
+        boolean exito = true;
+        if (this.txtUser.getText().equals("") || this.txtPass.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Debe llenar todos los campos!!!!!!");
+        }else{
+            String usr = txtUser.getText(), ps = txtPass.getText();
+            for (int i = 0; i < this.usuario.size(); i++) {
+                if (usr.equals("admin") && ps.equals("root")) {
+                    Biblioteca admin = new Biblioteca();
+                    admin.actuaUser = usr;
+                    admin.libros = libro;
+                    admin.modelo = modelo;
+                    admin.setCargar();
+                    System.out.println("Ahora esta lleno"+admin.libros.size());
+                    admin.setVisible(true);
+                    this.setVisible(false);
+                    return;
+                }else if (usr.equals(usuario.get(i).getUser()) && ps.equals(usuario.get(i).getPass())) {
+                    BibliotecaUser cliente = new BibliotecaUser();
+                    cliente.actuaUser = usr;
+                    cliente.libros = libro;
+                    cliente.modelo = modelo;
+                    cliente.setCargar();
+                    cliente.setVisible(true);
+                    this.setVisible(false);
+                    return;
+                }
+                if (i == usuario.size()-1) {
+                    exito = false;
+                }
+            }
+            if (!exito) {
+                JOptionPane.showMessageDialog(this, "No se encontró ningún usuario!!!!"
+                        + "\n Si no tiene uno registrese!!!");
+            }
+            
+        }
     }//GEN-LAST:event_btnIngresarMouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        if (this.txtUserR.getText().equals("") || this.txtPassR.getText().equals("") || this.txtTelefono.getText().equals("")
+                || this.txtCorreo.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Debe llenar todos los campos!!!!!!");
+        }else{
+            String fecha = form.format(this.jdUserNacimiento);
+            Usuario u = new Usuario(this.txtUserR.getText(), this.txtPassR.getText(), fecha, this.txtTelefono.getText(), this.txtCorreo.getText(), this.cmbGenero.getSelectedItem().toString());
+        }
+    }//GEN-LAST:event_jButton1MouseClicked
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Loggin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Loggin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Loggin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Loggin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Loggin().setVisible(true);
@@ -271,15 +339,15 @@ public class Loggin extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private com.toedter.calendar.JDateChooser jdUserNacimiento;
     private javax.swing.JLabel label2;
     private javax.swing.JTextField txtCorreo;
-    private javax.swing.JTextField txtFecha;
     private javax.swing.JTextField txtPass;
     private javax.swing.JTextField txtPassR;
     private javax.swing.JTextField txtTelefono;
     private javax.swing.JTextField txtUser;
     private javax.swing.JTextField txtUserR;
     // End of variables declaration//GEN-END:variables
-    public String actuaUser;
-
+    
+    
 }

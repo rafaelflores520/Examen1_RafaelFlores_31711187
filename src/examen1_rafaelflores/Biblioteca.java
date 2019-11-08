@@ -5,17 +5,28 @@
  */
 package examen1_rafaelflores;
 
+import java.awt.HeadlessException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Faith
  */
 public class Biblioteca extends javax.swing.JFrame {
-
+    public ArrayList<Libro> libros = new ArrayList();
+    public DefaultTableModel modelo;
+    public String genre[] = {"Fantasia", "Romance", "Accion", "Historia"}; 
+    public String actuaUser;
+    public SimpleDateFormat form = new SimpleDateFormat("dd-MM-yyyy");
     /**
      * Creates new form Biblioteca
      */
     public Biblioteca() {
         initComponents();
+        
     }
 
     /**
@@ -56,6 +67,7 @@ public class Biblioteca extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jtHistorial = new javax.swing.JTable();
+        btnSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,11 +79,20 @@ public class Biblioteca extends javax.swing.JFrame {
 
         jLabel6.setText("Edicion");
 
+        spnEdicion.setModel(new javax.swing.SpinnerNumberModel(1, 1, 20, 1));
+
         jLabel7.setText("Copias");
+
+        spnCopias.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
 
         jLabel8.setText("Precio");
 
         jButton1.setText("Crear Libro");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         jLabel1.setText("Titulo");
 
@@ -103,18 +124,19 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(spnCopias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(spnEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cmbPuntaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtTitulo)
                             .addComponent(txtAutor)
                             .addComponent(txtDescripcion)
                             .addComponent(dcFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
-                            .addComponent(txtPrecio))
+                            .addComponent(txtPrecio)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(spnCopias, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(spnEdicion, javax.swing.GroupLayout.Alignment.LEADING)))
                         .addGap(116, 116, 116)
                         .addComponent(jButton1))
                     .addComponent(cmbGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(108, Short.MAX_VALUE))
+                .addContainerGap(243, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -156,7 +178,7 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
                     .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Agregar Libro", jPanel1);
@@ -187,8 +209,18 @@ public class Biblioteca extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jtLibro);
 
         btnMod.setText("Modificar");
+        btnMod.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnModMouseClicked(evt);
+            }
+        });
 
         btnDel.setText("Eliminar");
+        btnDel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDelMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -198,7 +230,7 @@ public class Biblioteca extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 717, Short.MAX_VALUE)
                         .addGap(40, 40, 40))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(btnMod)
@@ -252,37 +284,179 @@ public class Biblioteca extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(157, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("Historial", jPanel3);
+
+        btnSalir.setText("Salir");
+        btnSalir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSalirMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(jTabbedPane1)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnSalir))
+                    .addComponent(jTabbedPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(btnSalir)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalirMouseClicked
+        Loggin log = new Loggin();
+        log.modelo = modelo;
+        log.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnSalirMouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        modelo = (DefaultTableModel) this.jtLibro.getModel();
+        if (this.txtTitulo.getText().equals("") || this.txtDescripcion.getText().equals("") || this.txtAutor.getText().equals("") || this.txtPrecio.getText().equals("")) {
+           JOptionPane.showMessageDialog(this, "Debe llenar todos los campos!!!!!!"); 
+        }else{
+            double precio;
+            String fecha = form.format(this.dcFecha);
+            try {
+                precio = Double.parseDouble(this.txtPrecio.getText());
+                Libro lib = new Libro(this.txtTitulo.getText(), this.txtDescripcion.getText(), this.cmbGenero.getSelectedItem().toString(), 
+                        this.txtAutor.getText(), fecha, Integer.parseInt(this.cmbPuntaje.getSelectedItem().toString()), Integer.parseInt(this.spnCopias.getValue().toString()), 
+                        Integer.parseInt(this.spnEdicion.getValue().toString()), precio);
+                libros.add(lib);
+                Object row [] = {
+                    lib.getTitulo(),
+                    lib.getAutor(),
+                    lib.getDescrip(),
+                    lib.getFechaLanzamiento(),
+                    lib.getPuntos(),
+                    lib.getEdicion(),
+                    lib.getCopias(),
+                    lib.getGenero(),
+                    lib.getPrecio()
+                };
+                modelo.addRow(row);
+                this.jtLibro.setModel(modelo);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "En la seccion de Precio solo puede ingresar datos numericos!!!!"); 
+            }
+        }
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    private void btnModMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnModMouseClicked
+        modelo = (DefaultTableModel) this.jtLibro.getModel();
+        if (this.jtLibro.getSelectedRow() >= 0) {
+            int col = this.jtLibro.getSelectedColumn();
+            switch (col) {
+                case 0:
+                    String titulo = JOptionPane.showInputDialog("Ingrese el nuevo titulo");
+                    modelo.setValueAt(titulo, this.jtLibro.getSelectedRow(), col);
+                    break;
+                case 1:
+                    String autor = JOptionPane.showInputDialog("Ingrese el nuevo Autor");
+                    modelo.setValueAt(autor, this.jtLibro.getSelectedRow(), col);
+                    break;
+                case 2:
+                    String descrip = JOptionPane.showInputDialog("Ingrese la nueva Descripcion");
+                    modelo.setValueAt(descrip, this.jtLibro.getSelectedRow(), col);
+                    break;
+                case 3:
+                    String fecha = JOptionPane.showInputDialog("Ingrese la nueva fecha (dd-MM-yyyy)");
+                    modelo.setValueAt(fecha, this.jtLibro.getSelectedRow(), col);
+                    break;
+                case 4:
+                    try {
+                        int puntos = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la nueva puntuacion"));
+                        if (puntos > 0 && puntos < 6) {
+                            modelo.setValueAt(puntos, this.jtLibro.getSelectedRow(), col);
+                        }else{
+                            JOptionPane.showMessageDialog(this, "No puede ingresar una puntuacion menor a 1 o mayor a 5");
+                        }
+                    } catch (HeadlessException | NumberFormatException e) {
+                        JOptionPane.showMessageDialog(this, "No puede ingresar otro caracter aparte de numeros!!!");
+                    }
+                    break;
+                case 5:
+                    try {
+                        int edicion = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la nueva Edicion"));
+                        if (edicion > 0) {
+                            modelo.setValueAt(edicion, this.jtLibro.getSelectedRow(), col);
+                        }else{
+                            JOptionPane.showMessageDialog(this, "No puede ingresar una Edicion menor a 1 ");
+                        }
+                    } catch (HeadlessException | NumberFormatException e) {
+                        JOptionPane.showMessageDialog(this, "No puede ingresar otro caracter aparte de numeros!!!");
+                    }
+                    break;
+                case 6:
+                    try {
+                        int copias = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la nueva Edicion"));
+                        if (copias > 0) {
+                            modelo.setValueAt(copias, this.jtLibro.getSelectedRow(), col);
+                        }else{
+                            JOptionPane.showMessageDialog(this, "No puede ingresar una puntuacion menor a 1 ");
+                        }
+                    } catch (HeadlessException | NumberFormatException e) {
+                        JOptionPane.showMessageDialog(this, "No puede ingresar otro caracter aparte de numeros!!!");
+                    }
+                    break;
+                case 7:
+                    String genero = JOptionPane.showInputDialog("Ingrese el nuevo genero");
+                    for (int i = 0; i < genre.length; i++) {
+                        if (genero.equals(genre[i])) {
+                            modelo.setValueAt(genero, this.jtLibro.getSelectedRow(), col);
+                            break;
+                        }
+                        if (i == genre.length-1) {
+                            JOptionPane.showMessageDialog(this, "No puede Ingresar ese genero!!!");
+                        }
+                    }
+                    break;
+                case 8:
+                    try {
+                        double precio = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el nuevo Precio"));
+                        if (precio > 0) {
+                            modelo.setValueAt(precio, this.jtLibro.getSelectedRow(), col);
+                        }else{
+                            JOptionPane.showMessageDialog(this, "No puede ingresar un precio menor a 1 ");
+                        }
+                    } catch (HeadlessException | NumberFormatException e) {
+                        JOptionPane.showMessageDialog(this, "No puede ingresar otro caracter aparte de numeros!!!");
+                    }
+                    break;
+            }
+            this.jtLibro.setModel(modelo);
+        }
+    }//GEN-LAST:event_btnModMouseClicked
+
+    private void btnDelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDelMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDelMouseClicked
 
     /**
      * @param args the command line arguments
@@ -322,6 +496,7 @@ public class Biblioteca extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDel;
     private javax.swing.JButton btnMod;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JComboBox<String> cmbGenero;
     private javax.swing.JComboBox<String> cmbPuntaje;
     private com.toedter.calendar.JDateChooser dcFecha;
@@ -350,4 +525,23 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JTextField txtPrecio;
     private javax.swing.JTextField txtTitulo;
     // End of variables declaration//GEN-END:variables
+    
+    public void setCargar(){
+        for (int i = 0; i < libros.size(); i++) {
+            Libro lib = libros.get(i);
+            Object row[] ={
+                lib.getTitulo(),
+                    lib.getAutor(),
+                    lib.getDescrip(),
+                    lib.getFechaLanzamiento(),
+                    lib.getPuntos(),
+                    lib.getEdicion(),
+                    lib.getCopias(),
+                    lib.getGenero(),
+                    lib.getPrecio()
+            };
+            modelo.addRow(row);
+            this.jtLibro.setModel(modelo);
+        }
+    }
 }
