@@ -15,7 +15,10 @@ import javax.swing.table.DefaultTableModel;
 public class BibliotecaUser extends javax.swing.JFrame {
     public String actuaUser;
     public ArrayList<Libro> libros = new ArrayList();
+    public ArrayList<Usuario> users = new ArrayList();
+    public ArrayList<Libro> libroFav = new ArrayList();
     public DefaultTableModel modelo;
+    public DefaultTableModel modeloFav;
     /**
      * Creates new form BibliotecaUser
      */
@@ -50,13 +53,13 @@ public class BibliotecaUser extends javax.swing.JFrame {
 
         jtListaLibros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jScrollPane1.setViewportView(jtListaLibros);
@@ -75,6 +78,11 @@ public class BibliotecaUser extends javax.swing.JFrame {
         jScrollPane2.setViewportView(JtLibrosUser);
 
         btnAgregar.setText("Agregar");
+        btnAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAgregarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -196,6 +204,32 @@ public class BibliotecaUser extends javax.swing.JFrame {
         this.setVisible(false);    
     }//GEN-LAST:event_btnSalirMouseClicked
 
+    private void btnAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregarMouseClicked
+        if (this.JtLibrosUser.getSelectedRow() >= 0) {
+            modelo = (DefaultTableModel) this.JtLibrosUser.getModel();
+            for (int i = 0; i < libros.size(); i++) {
+                if (modelo.getValueAt(this.JtLibrosUser.getSelectedRow(), 0).equals(libros.get(i).getTitulo())) {
+                    Libro lib = libros.get(i);
+                    libroFav.add(lib);
+                    Object row[] = {
+                        lib.getTitulo(),
+                        lib.getAutor(),
+                        lib.getDescrip(),
+                        lib.getFechaLanzamiento(),
+                        lib.getPuntos(),
+                        lib.getEdicion(),
+                        lib.getCopias(),
+                        lib.getGenero(),
+                        lib.getPrecio()
+                    };
+                    modeloFav.addRow(row);
+                    break;
+                }
+            }
+            this.jtListaLibros.setModel(modeloFav);
+        }
+    }//GEN-LAST:event_btnAgregarMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -263,5 +297,34 @@ public class BibliotecaUser extends javax.swing.JFrame {
             modelo.addRow(row);
             this.JtLibrosUser.setModel(modelo);
         }
+        
+        for (int i = 0; i < users.size(); i++) {
+            if (actuaUser.equals(users.get(i).getUser())) {
+                libroFav = users.get(i).getLista();
+                break;
+            }
+        }
+        
+        if (libroFav.isEmpty()) {
+            this.jtListaLibros.setModel(modeloFav);
+        }else{
+            for (int i = 0; i < libroFav.size(); i++) {
+                Libro lib = libroFav.get(i);
+                Object row[] = {
+                    lib.getTitulo(),
+                    lib.getAutor(),
+                    lib.getDescrip(),
+                    lib.getFechaLanzamiento(),
+                    lib.getPuntos(),
+                    lib.getEdicion(),
+                    lib.getCopias(),
+                    lib.getGenero(),
+                    lib.getPrecio()
+                };
+                modelo.addRow(row);
+                this.jtListaLibros.setModel(modelo);
+            }
+        }
+        
     }
 }

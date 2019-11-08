@@ -285,6 +285,7 @@ public class Loggin extends javax.swing.JFrame {
                     cliente.actuaUser = usr;
                     cliente.libros = libro;
                     cliente.modelo = modelo;
+                    cliente.modeloFav = orig;
                     cliente.setCargar();
                     cliente.setVisible(true);
                     this.setVisible(false);
